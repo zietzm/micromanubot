@@ -1,0 +1,24 @@
+\documentclass{article}
+\input{imports.tex}
+
+@metadata
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    @abstract
+\end{abstract}
+
+@main
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+
+@supplement
+
+\end{document}
