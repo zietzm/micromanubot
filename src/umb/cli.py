@@ -19,12 +19,7 @@ def main():
         version=f"%(prog)s {umb.__version__}",
         help="Show the version number and exit",
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="Increase verbosity",
-    )
+    add_verbosity_arg(parser)
     subparsers = parser.add_subparsers(help="sub-command help", dest="command")
     add_new_command(subparsers)
     add_build_command(subparsers)
@@ -63,6 +58,15 @@ def main():
             raise NotImplementedError(f"Command {args.command} not implemented")
 
 
+def add_verbosity_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Increase verbosity",
+    )
+
+
 def add_new_command(subparsers: argparse._SubParsersAction) -> None:
     new_parser = subparsers.add_parser(
         "new",
@@ -73,6 +77,7 @@ def add_new_command(subparsers: argparse._SubParsersAction) -> None:
     new_parser.add_argument(
         "PATH", help="Path to create the project", type=pathlib.Path
     )
+    add_verbosity_arg(new_parser)
 
 
 def add_build_command(subparsers: argparse._SubParsersAction) -> None:
@@ -88,3 +93,4 @@ def add_build_command(subparsers: argparse._SubParsersAction) -> None:
         choices=["all", "tex", "pdf"],
         default="all",
     )
+    add_verbosity_arg(build_parser)
