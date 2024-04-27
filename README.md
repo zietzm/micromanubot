@@ -5,7 +5,8 @@ A build tool for academic manuscripts.
 Lowering the friction to academic writing.
 Opinionated but customizable.
 [Cargo](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html) for preprints.
-[Manubot](https://manubot.org/) in a self-contained, command-line tool.
+A fraction of [Manubot](https://manubot.org/) in a self-contained, command-line tool.
+All the flexibility of LaTeX, available immediately.
 
 ## Why Micromanubot?
 
@@ -16,6 +17,10 @@ Opinionated but customizable.
 
 
 ## Installation
+
+`pdflatex` and `bibtex` must be installed to produce PDF output.
+A simple way to accomplish this is to install TeX Live.
+It appears that given the default packages imported, you'll need `fancyhdr`, `multirow`, and `preprint` as well, which can be installed using `tlmgr`.
 
 ```bash
 pip install micromanubot
