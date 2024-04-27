@@ -1,0 +1,22 @@
+\section{Introduction}
+
+This is the main text of the manuscript.
+It should be written in LaTeX and can be split into multiple files.
+For example, you could write files called ``01.introduction.tex'', ``02.methods.tex'', etc. and these would be automatically included in the final manuscript, in numerical order.
+The big advantage of micromanubot is that you mustn't concern yourself with LaTeX boilerplate, manual image imports, or manual bibliography management.
+Just write your content, locate figures using URLs (see below), cite references using DOIs \cite{@doi:10.1103/PhysRev.47.777}, then build the manuscript using ``umb build'', and a fully-formatted LaTeX manuscript and output will be generated for you.
+Include figures using normal LaTeX commands.
+For example, Figure \ref{fig:example} shows an example figure.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{https://apastyle.apa.org/images/sample-figure-bar-graph_tcm11-261608_w1024_n.jpg}
+    \caption{
+        \textbf{Example Figure.} 
+        This is an example figure.
+    }
+    \label{fig:example}
+\end{figure}
+
+Of course, local figures and citations can be used as well.
+Simply provide figures in ``content/images/'' and citations \cite{umb} in \texttt{content/manual\_references.bib}.

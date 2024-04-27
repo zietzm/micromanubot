@@ -1,0 +1,38 @@
+[project]
+name = "umb"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "zietzm", email = "michael.zietz@gmail.com" }
+]
+dependencies = [
+    "tomlkit>=0.12.4",
+    "pydantic>=2.7.1",
+    "pylatexenc>=2.10",
+    "bibtexparser>=2.0.0b7",
+    "requests>=2.31.0",
+    "pyrate-limiter>=3.6.0",
+    "rich>=13.7.1",
+    "validators>=0.28.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[project.scripts]
+"umb" = "umb.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=8.1.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/umb"]
