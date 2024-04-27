@@ -14,9 +14,6 @@ Opinionated but customizable.
 * Automatic image file management - provide images at URLs without manual downloads
 * No LaTeX boilerplate fiddling - automatic authorship, metadata, and formatting.
 
-## Examples - writing with Micromanubot
-
-
 
 ## Installation
 
@@ -60,7 +57,7 @@ This leads to a repository that maintains all of the commits to the rootstock, m
 On the other hand, Micromanubot creates a clean repository every time, using the simple command `umb new`.
 
 
-#### Why not [Overleaf](www.overleaf.com)?
+#### Why not [Overleaf](https://overleaf.com)?
 
 Overleaf is a collaborative online LaTeX editor, basically Google Docs for LaTeX.
 We love Overleaf, and we use it regularly for manuscripts.
