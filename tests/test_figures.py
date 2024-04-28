@@ -1,7 +1,7 @@
 import pytest
 from pylatexenc.latexwalker import LatexWalker
 
-import umb.figures
+import micromanubot.figures
 
 
 @pytest.mark.parametrize(
@@ -25,7 +25,7 @@ def test_extract_keys(test_input, expected):
     walker = LatexWalker(test_input)
     nodelist, _, _ = walker.get_latex_nodes()
     fig_node = nodelist[0]
-    assert umb.figures.extract_keys(fig_node) == expected
+    assert micromanubot.figures.extract_keys(fig_node) == expected
 
 
 @pytest.mark.parametrize(
@@ -45,4 +45,4 @@ def test_extract_includegraphics_key(test_input, expected):
     walker = LatexWalker(test_input)
     nodelist, _, _ = walker.get_latex_nodes()
     fig_node = nodelist[0]
-    assert umb.figures.extract_includegraphics_key(fig_node) == expected
+    assert micromanubot.figures.extract_includegraphics_key(fig_node) == expected

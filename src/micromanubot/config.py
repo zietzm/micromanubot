@@ -8,11 +8,11 @@ import os
 import tomlkit
 from pydantic import BaseModel, Field
 
-import umb
+import micromanubot
 
 
 class ManubotConfig(BaseModel):
-    version: str = Field(default=umb.__version__)
+    version: str = Field(default=micromanubot.__version__)
 
 
 class Manuscript(BaseModel):

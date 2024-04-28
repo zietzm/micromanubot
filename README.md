@@ -1,4 +1,4 @@
-# umb - Micromanubot
+# Micromanubot
 
 A build tool for academic manuscripts.
 

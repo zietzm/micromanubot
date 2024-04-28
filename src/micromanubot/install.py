@@ -7,7 +7,7 @@ import pathlib
 import shutil
 import subprocess
 
-import umb.pytinytex
+import micromanubot.pytinytex
 
 DEFAULT_PACKAGES = ["fancyhdr", "multirow", "preprint"]
 
@@ -52,7 +52,9 @@ def install_tinytex(root: pathlib.Path) -> None:
     tex_dir = root.joinpath("tinytex")
     tex_dir.mkdir(parents=True, exist_ok=True)
     tex_dir = tex_dir.as_posix()
-    umb.pytinytex.download_tinytex(target_folder=tex_dir, download_folder=tex_dir)
+    micromanubot.pytinytex.download_tinytex(
+        target_folder=tex_dir, download_folder=tex_dir
+    )
     check_pdflatex_bibtex_installed()
     install_packages(DEFAULT_PACKAGES)
 

@@ -3,8 +3,8 @@ import pathlib
 import shutil
 import subprocess
 
-import umb.config
-import umb.figures
+import micromanubot.config
+import micromanubot.figures
 
 
 def initialize(directory: pathlib.Path, no_custom: bool = True) -> None:
@@ -25,9 +25,9 @@ def initialize(directory: pathlib.Path, no_custom: bool = True) -> None:
     """
     _check_directory(directory)
     if no_custom:
-        metadata = umb.config.Metadata.make_no_custom()
+        metadata = micromanubot.config.Metadata.make_no_custom()
     else:
-        metadata = umb.config.Metadata.make_default()
+        metadata = micromanubot.config.Metadata.make_default()
 
     try:
         metadata.write_toml(directory / "umb.toml")
@@ -39,7 +39,7 @@ def initialize(directory: pathlib.Path, no_custom: bool = True) -> None:
     cache_dir.joinpath("images").mkdir()
     cache_dir.joinpath("citations_cache.bib").touch()
     fig_cache = cache_dir.joinpath("figures_cache.json")
-    umb.figures.FiguresCache(figures=[]).write_json(fig_cache)
+    micromanubot.figures.FiguresCache(figures=[]).write_json(fig_cache)
 
     with open(directory.joinpath(".gitignore"), "w") as f:
         f.write(".umb\nbuild\n")
@@ -61,7 +61,7 @@ def _check_directory(directory: pathlib.Path) -> None:
 
 def _make_template_manuscript(directory: pathlib.Path) -> None:
     """Create a template manuscript in the given directory."""
-    content_templates = importlib.resources.files("umb.template_data.content")
+    content_templates = importlib.resources.files("micromanubot.template_data.content")
     content_dir = directory.joinpath("content")
     content_dir.mkdir()
     content_dir.joinpath("images").mkdir()
@@ -80,7 +80,7 @@ def _make_template_manuscript(directory: pathlib.Path) -> None:
         with importlib.resources.as_file(source_file) as source_path:
             shutil.copy(source_path, content_dir.joinpath(file))
 
-    asset_templates = importlib.resources.files("umb.template_data.assets")
+    asset_templates = importlib.resources.files("micromanubot.template_data.assets")
     asset_dir = directory.joinpath("assets")
     asset_dir.mkdir()
     files = [

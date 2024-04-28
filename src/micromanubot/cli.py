@@ -6,10 +6,10 @@ from rich import print
 from rich.highlighter import NullHighlighter
 from rich.logging import RichHandler
 
-import umb
-import umb.build
-import umb.install
-import umb.new
+import micromanubot
+import micromanubot.build
+import micromanubot.install
+import micromanubot.new
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version=f"%(prog)s {umb.__version__}",
+        version=f"%(prog)s {micromanubot.__version__}",
         help="Show the version number and exit",
     )
     add_verbosity_arg(parser)
@@ -139,41 +139,41 @@ def handle_new(args: argparse.Namespace) -> None:
     if args.PATH.exists():
         raise ValueError(f"Path `{args.PATH}` already exists")
     args.PATH.mkdir()
-    umb.new.initialize(args.PATH, args.no_custom)
-    umb.new.git_init(args.PATH)
+    micromanubot.new.initialize(args.PATH, args.no_custom)
+    micromanubot.new.git_init(args.PATH)
     print(f"    [bold green]Created[/] manuscript at `{args.PATH}`")
 
 
 def handle_build(args: argparse.Namespace, cwd: pathlib.Path) -> None:
-    if not umb.build.is_umb_project(cwd):
+    if not micromanubot.build.is_umb_project(cwd):
         raise ValueError("Not an umb project")
     print("   [bold green]Building[/] manuscript")
-    umb.build.setup_build_directory(cwd)
-    umb.build.build_latex(cwd)
+    micromanubot.build.setup_build_directory(cwd)
+    micromanubot.build.build_latex(cwd)
     if args.type in {"all", "pdf"}:
-        umb.install.check_pdflatex_bibtex_installed()
-        umb.build.build_latex_pdf(cwd)
+        micromanubot.install.check_pdflatex_bibtex_installed()
+        micromanubot.build.build_latex_pdf(cwd)
     print("   [bold green]Finished[/] building the manuscript")
 
 
 def handle_install(args: argparse.Namespace) -> None:
-    umb.install.check_extra_installed()
-    is_installed = umb.install.is_tinytex_installed()
+    micromanubot.install.check_extra_installed()
+    is_installed = micromanubot.install.is_tinytex_installed()
     if is_installed and not args.force:
         print("TinyTeX already installed (use --force to reinstall)")
         return
     if is_installed and args.force:
         print("   [bold green]Removing[/] existing TinyTeX installation")
-        umb.install.uninstall_tinytex(args.root)
+        micromanubot.install.uninstall_tinytex(args.root)
 
     print(" [bold green]Installing[/] LaTeX compiler and packages")
-    umb.install.install_tinytex(args.root)
+    micromanubot.install.install_tinytex(args.root)
     print("   [bold green]Finished[/] installing TinyTeX and packages")
 
 
 def handle_uninstall(args: argparse.Namespace) -> None:
-    if not umb.install.is_tinytex_installed():
+    if not micromanubot.install.is_tinytex_installed():
         print("TinyTeX is not installed")
         return
-    umb.install.uninstall_tinytex(args.root)
+    micromanubot.install.uninstall_tinytex(args.root)
     print(" [bold green]Uninstalled[/] LaTeX compiler and packages")

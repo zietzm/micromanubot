@@ -4,8 +4,8 @@ from tempfile import TemporaryDirectory
 
 import fitz
 
-import umb.cli
-import umb.config
+import micromanubot.cli
+import micromanubot.config
 
 
 def test_new(tmp_path: pathlib.Path) -> None:
@@ -13,7 +13,7 @@ def test_new(tmp_path: pathlib.Path) -> None:
     with TemporaryDirectory() as tmp_dir:
         tmp_path = pathlib.Path(tmp_dir).joinpath("my-manuscript")
         new_args = argparse.Namespace(PATH=tmp_path, no_custom=True)
-        umb.cli.handle_new(new_args)
+        micromanubot.cli.handle_new(new_args)
         directories = [
             ".umb",
             ".umb/images",
@@ -49,10 +49,10 @@ def test_build(tmp_path: pathlib.Path) -> None:
     with TemporaryDirectory() as tmp_dir:
         tmp_path = pathlib.Path(tmp_dir).joinpath("my-manuscript")
         new_args = argparse.Namespace(PATH=tmp_path, no_custom=True)
-        umb.cli.handle_new(new_args)
+        micromanubot.cli.handle_new(new_args)
 
         build_args = argparse.Namespace(type="all")
-        umb.cli.handle_build(build_args, tmp_path)
+        micromanubot.cli.handle_build(build_args, tmp_path)
 
         build_files = [
             "build/main.tex",

@@ -1,6 +1,6 @@
 [project]
-name = "umb"
-version = "0.3.1"
+name = "micromanubot"
+version = "0.4.0"
 description = "A build tool for academic manuscripts"
 authors = [
     { name = "zietzm", email = "michael.zietz@gmail.com" }
@@ -24,7 +24,7 @@ classifiers = [
 ]
 
 [project.scripts]
-"umb" = "umb.cli:main"
+"umb" = "micromanubot.cli:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -41,4 +41,4 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/umb"]
+packages = ["src/micromanubot"]

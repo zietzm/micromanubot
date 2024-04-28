@@ -10,7 +10,7 @@ import requests
 from bibtexparser.model import Block
 from pylatexenc.latexwalker import LatexMacroNode
 
-import umb
+import micromanubot
 
 logger = logging.getLogger(__name__)
 
@@ -146,7 +146,7 @@ def fetch_doi_reference(key: str) -> str:
     """Fetch a BibTeX reference for a DOI using the doi.org API."""
     headers = {
         "Accept": "application/x-bibtex",
-        "User-Agent": f"umb/{umb.__version__}; Python/{sys.version}",
+        "User-Agent": f"umb/{micromanubot.__version__}; Python/{sys.version}",
     }
     response = requests.get(f"https://doi.org/{key}", headers=headers)
     response.raise_for_status()

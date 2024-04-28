@@ -14,14 +14,14 @@ import pylatexenc.latexwalker
 import rich.progress
 from pylatexenc.latexwalker import LatexEnvironmentNode, LatexMacroNode
 
-import umb.cite
-import umb.config
-import umb.figures
-import umb.install
+import micromanubot.cite
+import micromanubot.config
+import micromanubot.figures
+import micromanubot.install
 
 
 def is_umb_project(root_dir: pathlib.Path) -> bool:
-    """Check if a directory is a valid umb project."""
+    """Check if a directory is a valid micromanubot project."""
     return (
         root_dir.joinpath("umb.toml").exists()
         and root_dir.joinpath("content").exists()
@@ -58,11 +58,11 @@ def build_latex(root_dir: pathlib.Path) -> None:
     shutil.copy(root_dir.joinpath("content/imports.tex"), build_dir)
     main_files = find_manuscript_files(root_dir)
 
-    bib = umb.cite.Bibliography(
+    bib = micromanubot.cite.Bibliography(
         cache_path=root_dir.joinpath(".umb/citations_cache.bib"),
         manual_path=root_dir.joinpath("content/manual_references.bib"),
     )
-    fig = umb.figures.ManuscriptFigures(
+    fig = micromanubot.figures.ManuscriptFigures(
         cache_path=root_dir.joinpath(".umb"),
         manual_path=root_dir.joinpath("content").joinpath("images"),
     )
@@ -79,8 +79,8 @@ def build_latex(root_dir: pathlib.Path) -> None:
     bibtexparser.write_file(str(bib_path), bib_library)
     fig.reconcile_figures(build_dir)
 
-    metadata = umb.config.Metadata.read_toml(root_dir.joinpath("umb.toml"))
-    build_files = importlib.resources.files("umb.template_data.build")
+    metadata = micromanubot.config.Metadata.read_toml(root_dir.joinpath("umb.toml"))
+    build_files = importlib.resources.files("micromanubot.template_data.build")
     template_path = build_files.joinpath("main.tex")
     with importlib.resources.as_file(template_path) as file:
         (
@@ -95,8 +95,8 @@ def build_latex(root_dir: pathlib.Path) -> None:
 def build_latex_pdf(root_dir: pathlib.Path) -> None:
     """Compile the built LaTeX manuscript to a PDF."""
     build_dir = root_dir.joinpath("build")
-    pdflatex = umb.install.find_pdflatex().as_posix()
-    bibtex = umb.install.find_bibtex().as_posix()
+    pdflatex = micromanubot.install.find_pdflatex().as_posix()
+    bibtex = micromanubot.install.find_bibtex().as_posix()
     commands = [
         f"{pdflatex} -interaction=nonstopmode main",
         f"{bibtex} main",
@@ -176,7 +176,9 @@ class ManuscriptSection(ManuscriptFile):
     """
 
     def process(
-        self, bib: umb.cite.Bibliography, fig: umb.figures.ManuscriptFigures
+        self,
+        bib: micromanubot.cite.Bibliography,
+        fig: micromanubot.figures.ManuscriptFigures,
     ) -> ManuscriptSection:
         walker = pylatexenc.latexwalker.LatexWalker(self.raw_content)
         nodelist, _, _ = walker.get_latex_nodes()
@@ -230,7 +232,7 @@ class MainTemplate(ManuscriptFile):
         return templates
 
     @staticmethod
-    def format_metadata(metadata: umb.config.Metadata) -> str:
+    def format_metadata(metadata: micromanubot.config.Metadata) -> str:
         output = f"\\title{{{metadata.manuscript.title}}}\n\n"
         output += f"\\date{{{metadata.manuscript.date}}}\n\n"
         output += (
@@ -256,7 +258,9 @@ class MainTemplate(ManuscriptFile):
         return output
 
     @staticmethod
-    def gather_affiliations(authors: list[umb.config.Author]) -> dict[str, int]:
+    def gather_affiliations(
+        authors: list[micromanubot.config.Author],
+    ) -> dict[str, int]:
         idx = 1
         affil_to_idx = dict()
         for author in authors:
@@ -271,7 +275,9 @@ class MainTemplate(ManuscriptFile):
         return affil_to_idx
 
     @staticmethod
-    def format_author(author: umb.config.Author, affil_to_idx: dict[str, int]) -> str:
+    def format_author(
+        author: micromanubot.config.Author, affil_to_idx: dict[str, int]
+    ) -> str:
         author_string = "\\author"
         if author.affiliations is not None:
             affil_idx = [str(affil_to_idx[a]) for a in author.affiliations]
@@ -299,7 +305,7 @@ class MainTemplate(ManuscriptFile):
 
     def process(
         self,
-        metadata: umb.config.Metadata,
+        metadata: micromanubot.config.Metadata,
         main_files: list[pathlib.Path],
     ) -> MainTemplate:
         if self.templates != ["@metadata", "@abstract", "@main", "@supplement"]:

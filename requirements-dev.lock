@@ -11,7 +11,7 @@
 annotated-types==0.6.0
     # via pydantic
 bibtexparser==2.0.0b7
-    # via umb
+    # via micromanubot
 certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
@@ -29,30 +29,30 @@ packaging==24.0
 pluggy==1.5.0
     # via pytest
 pydantic==2.7.1
-    # via umb
+    # via micromanubot
 pydantic-core==2.18.2
     # via pydantic
 pygments==2.17.2
     # via rich
 pylatexenc==2.10
     # via bibtexparser
-    # via umb
+    # via micromanubot
 pymupdf==1.24.2
 pymupdfb==1.24.1
     # via pymupdf
 pyrate-limiter==3.6.0
-    # via umb
+    # via micromanubot
 pytest==8.1.2
 requests==2.31.0
-    # via umb
+    # via micromanubot
 rich==13.7.1
-    # via umb
+    # via micromanubot
 tomlkit==0.12.4
-    # via umb
+    # via micromanubot
 typing-extensions==4.11.0
     # via pydantic
     # via pydantic-core
 urllib3==2.2.1
     # via requests
 validators==0.28.1
-    # via umb
+    # via micromanubot
