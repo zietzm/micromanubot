@@ -1,6 +1,6 @@
 [project]
 name = "umb"
-version = "0.2.0"
+version = "0.2.1"
 description = "Add your description here"
 authors = [
     { name = "zietzm", email = "michael.zietz@gmail.com" }
@@ -34,6 +34,7 @@ build-backend = "hatchling.build"
 managed = true
 dev-dependencies = [
     "pytest>=8.1.2",
+    "pymupdf>=1.24.2",
 ]
 
 [tool.hatch.metadata]

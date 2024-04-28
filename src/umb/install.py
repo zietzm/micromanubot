@@ -2,6 +2,7 @@
 
 Defaults to TinyTeX. Installation requires the "tex" extra.
 """
+
 import importlib
 import importlib.util
 import pathlib
@@ -15,16 +16,8 @@ def check_extra_installed() -> None:
         raise ImportError("The 'tex' extra is required. ('pip install umb[tex]')")
 
 
-def is_tinytex_installed(root: pathlib.Path) -> bool:
-    bin_dir = root.joinpath("tinytex", "bin")
-    if not bin_dir.exists():
-        return False
-
-    for bin in ["pdflatex", "bibtex"]:
-        matches = list(bin_dir.glob(f"*/{bin}"))
-        if len(matches) == 0:
-            return False
-    return True
+def is_tinytex_installed() -> bool:
+    return pathlib.Path.home().joinpath(".umb", "tinytex").exists()
 
 
 def _find_latex(name: str) -> pathlib.Path:
@@ -32,10 +25,11 @@ def _find_latex(name: str) -> pathlib.Path:
     if on_path:
         return pathlib.Path(on_path)
 
-    umb_dir = pathlib.Path.home().joinpath(".umb", "tinytex", "bin")
-    tinytex_executable = umb_dir.joinpath(name)
-    if tinytex_executable.exists():
-        return tinytex_executable
+    root = pathlib.Path.home().joinpath(".umb")
+    umb_dir = root.joinpath("tinytex", "bin")
+    matches = list(umb_dir.glob(f"*/{name}"))
+    if len(matches) > 0:
+        return matches[0]
 
     raise FileNotFoundError(f"{name} not found")
 
@@ -50,15 +44,8 @@ def find_bibtex() -> pathlib.Path:
 
 def check_pdflatex_bibtex_installed() -> None:
     """Check if pdflatex and bibtex are installed."""
-    umb_dir = pathlib.Path.home().joinpath(".umb", "tinytex", "bin")
-    for command in ["pdflatex", "bibtex"]:
-        on_path = shutil.which(command)
-        if on_path:
-            continue
-        elif umb_dir.joinpath(command).exists():
-            continue
-        else:
-            raise FileNotFoundError(f"{command} not found")
+    find_pdflatex()
+    find_bibtex()
 
 
 def install_tinytex(root: pathlib.Path) -> None:

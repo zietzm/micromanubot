@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import getpass
+import locale
 import os
 
 import tomlkit
@@ -18,7 +19,17 @@ class Manuscript(BaseModel):
     title: str = Field(default="Manuscript Title")
     date: datetime.date = Field(default_factory=datetime.date.today)
     keywords: list[str]
-    language: str = Field(default="en-US")
+    language: str = Field(default_factory=lambda: locale.getlocale()[0] or "en_US")
+
+    @classmethod
+    def make_no_custom(cls) -> Manuscript:
+        """Create a default manuscript object without customizing."""
+        return cls(
+            title="Manuscript Title",
+            keywords=["umb", "micromanubot"],
+            date=datetime.date(2024, 1, 1),
+            language="en_US",
+        )
 
 
 class Author(BaseModel):
@@ -30,11 +41,35 @@ class Author(BaseModel):
     funders: list[str] | None = None
     corresponding: bool | None = None
 
+    @classmethod
+    def make_no_custom(cls) -> Author:
+        """Create a default author object without customizing."""
+        return cls(
+            name="Author Name",
+            initials="AN",
+            orcid="0000-0000-0000-0000",
+            email="author@uni-somewhere.edu",
+            affiliations=[
+                "Department of Something, University of Somewhere, City, Country"
+            ],
+            funders=["Funder Name"],
+            corresponding=True,
+        )
+
 
 class Metadata(BaseModel):
     umb: ManubotConfig
     manuscript: Manuscript
     authors: list[Author]
+
+    @classmethod
+    def make_no_custom(cls) -> Metadata:
+        """Create a default manuscript metadata object without customizing."""
+        return cls(
+            umb=ManubotConfig(),
+            manuscript=Manuscript.make_no_custom(),
+            authors=[Author.make_no_custom()],
+        )
 
     @classmethod
     def make_default(cls) -> Metadata:

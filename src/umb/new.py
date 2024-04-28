@@ -7,12 +7,12 @@ import umb.config
 import umb.figures
 
 
-def initialize(directory: pathlib.Path) -> None:
+def initialize(directory: pathlib.Path, no_custom: bool = True) -> None:
     """Initialize a new project in a given, existing directory.
 
     Args:
         directory: Existing directory in which to initialize the project.
-        name: The name of the project. Defaults to the name of the directory.
+        no_custom: Whether to use a default configuration or not.
 
     Returns:
         None
@@ -24,7 +24,11 @@ def initialize(directory: pathlib.Path) -> None:
         OSError: The directory is not writable.
     """
     _check_directory(directory)
-    metadata = umb.config.Metadata.make_default()
+    if no_custom:
+        metadata = umb.config.Metadata.make_no_custom()
+    else:
+        metadata = umb.config.Metadata.make_default()
+
     try:
         metadata.write_toml(directory / "umb.toml")
     except OSError as e:

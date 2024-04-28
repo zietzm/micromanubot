@@ -41,40 +41,14 @@ def main():
 
     match args.command:
         case "new":
-            if args.PATH.exists():
-                raise ValueError(f"Path `{args.PATH}` already exists")
-            args.PATH.mkdir()
-            umb.new.initialize(args.PATH)
-            umb.new.git_init(args.PATH)
-            print(f"    [bold green]Created[/] manuscript at `{args.PATH}`")
+            handle_new(args)
         case "build":
             cwd = pathlib.Path.cwd()
-            if not umb.build.is_umb_project(cwd):
-                raise ValueError("Not an umb project")
-            print("   [bold green]Building[/] manuscript")
-            umb.build.setup_build_directory(cwd)
-            umb.build.build_latex(cwd)
-            if args.type in {"all", "pdf"}:
-                umb.install.check_pdflatex_bibtex_installed()
-                umb.build.build_latex_pdf(cwd)
+            handle_build(args, cwd)
         case "install":
-            umb.install.check_extra_installed()
-            is_installed = umb.install.is_tinytex_installed(args.root)
-            if is_installed and not args.force:
-                print("TinyTeX already installed (use --force to reinstall)")
-                return
-            if is_installed and args.force:
-                print("   [bold green]Removing[/] existing TinyTeX installation")
-                umb.install.uninstall_tinytex(args.root)
-
-            print(" [bold green]Installing[/] LaTeX compiler and packages")
-            umb.install.install_tinytex(args.root)
+            handle_install(args)
         case "uninstall":
-            if not umb.install.is_tinytex_installed(args.root):
-                print("TinyTeX is not installed")
-                return
-            umb.install.uninstall_tinytex(args.root)
-            print(" [bold green]Uninstalled[/] LaTeX compiler and packages")
+            handle_uninstall(args)
         case None:
             parser.print_help()
         case _:
@@ -99,6 +73,11 @@ def add_new_command(subparsers: argparse._SubParsersAction) -> None:
     )
     new_parser.add_argument(
         "PATH", help="Path to create the project", type=pathlib.Path
+    )
+    new_parser.add_argument(
+        "--no-custom",
+        help="Do not customize anything for the current user/date/locale",
+        action="store_true",
     )
     add_verbosity_arg(new_parser)
 
@@ -154,3 +133,45 @@ def add_uninstall_command(subparsers: argparse._SubParsersAction) -> None:
         default=pathlib.Path.home().joinpath(".umb"),
     )
     add_verbosity_arg(uninstall_parser)
+
+
+def handle_new(args: argparse.Namespace) -> None:
+    if args.PATH.exists():
+        raise ValueError(f"Path `{args.PATH}` already exists")
+    args.PATH.mkdir()
+    umb.new.initialize(args.PATH, args.no_custom)
+    umb.new.git_init(args.PATH)
+    print(f"    [bold green]Created[/] manuscript at `{args.PATH}`")
+
+
+def handle_build(args: argparse.Namespace, cwd: pathlib.Path) -> None:
+    if not umb.build.is_umb_project(cwd):
+        raise ValueError("Not an umb project")
+    print("   [bold green]Building[/] manuscript")
+    umb.build.setup_build_directory(cwd)
+    umb.build.build_latex(cwd)
+    if args.type in {"all", "pdf"}:
+        umb.install.check_pdflatex_bibtex_installed()
+        umb.build.build_latex_pdf(cwd)
+
+
+def handle_install(args: argparse.Namespace) -> None:
+    umb.install.check_extra_installed()
+    is_installed = umb.install.is_tinytex_installed()
+    if is_installed and not args.force:
+        print("TinyTeX already installed (use --force to reinstall)")
+        return
+    if is_installed and args.force:
+        print("   [bold green]Removing[/] existing TinyTeX installation")
+        umb.install.uninstall_tinytex(args.root)
+
+    print(" [bold green]Installing[/] LaTeX compiler and packages")
+    umb.install.install_tinytex(args.root)
+
+
+def handle_uninstall(args: argparse.Namespace) -> None:
+    if not umb.install.is_tinytex_installed():
+        print("TinyTeX is not installed")
+        return
+    umb.install.uninstall_tinytex(args.root)
+    print(" [bold green]Uninstalled[/] LaTeX compiler and packages")

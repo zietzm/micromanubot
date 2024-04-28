@@ -37,6 +37,9 @@ pygments==2.17.2
 pylatexenc==2.10
     # via bibtexparser
     # via umb
+pymupdf==1.24.2
+pymupdfb==1.24.1
+    # via pymupdf
 pyrate-limiter==3.6.0
     # via umb
 pytest==8.1.2
