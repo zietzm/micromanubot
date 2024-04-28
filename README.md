@@ -1,5 +1,11 @@
 # Micromanubot
 
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![image](https://img.shields.io/pypi/v/micromanubot)](https://pypi.python.org/pypi/micromanubot)
+[![image](https://img.shields.io/pypi/l/micromanubot)](https://pypi.python.org/pypi/micromanubot)
+[![image](https://img.shields.io/pypi/pyversions/micromanubot)](https://pypi.python.org/pypi/micromanubot)
+[![Actions status](https://img.shields.io/github/actions/workflow/status/zietzm/micromanubot/python-app.yml?branch=main&label=actions)](https://github.com/zietzm/micromanubot/actions)
+
 A build tool for academic manuscripts.
 
 Lowering the friction to academic writing.

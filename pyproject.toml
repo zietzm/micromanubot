@@ -1,6 +1,6 @@
 [project]
 name = "micromanubot"
-version = "0.4.1"
+version = "0.4.2"
 description = "A build tool for academic manuscripts"
 authors = [
     { name = "zietzm", email = "michael.zietz@gmail.com" }
@@ -21,6 +21,13 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Topic :: Text Processing :: Markup :: LaTeX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
 ]
 
 [project.scripts]
