@@ -33,8 +33,6 @@ pylatexenc==2.10
     # via umb
 pyrate-limiter==3.6.0
     # via umb
-pytinytex @ git+https://github.com/zietzm/PyTinyTeX@63aa7afca2e1f945253ab21e030e063f0b10c365
-    # via umb
 requests==2.31.0
     # via umb
 rich==13.7.1

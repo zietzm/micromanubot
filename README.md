@@ -48,23 +48,19 @@ umb new --help
 
 ## Installation
 
-Full installation, including TinyTex:
-
-```bash
-pip install micromanubot[tex]
-umb install
-```
-
-If you already have TeX installed and prefer to use the existing installation:
-
 ```bash
 pip install micromanubot
 ```
 
 `pdflatex` and `bibtex` must be installed to produce PDF output.
-One way to accomplish this is to install LaTeX (e.g. install TeX Live, TinyTex, etc.).
-For the default packages imported, you'll also need `fancyhdr`, `multirow`, and `preprint` as well, which can be installed using `tlmgr`.
-Of course, you may add/remove packages as you like---it's just LaTeX!
+Micromanubot includes an installer for TinyTex, a minimal version of LaTeX.
+To install TinyTex, run
+
+```bash
+umb install
+```
+
+If you already have TeX installed and prefer to use the existing installation, simply do not run the above command.
 
 
 ## FAQ

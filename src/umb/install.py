@@ -3,20 +3,13 @@
 Defaults to TinyTeX. Installation requires the "tex" extra.
 """
 
-import importlib
-import importlib.util
 import pathlib
 import shutil
 import subprocess
 
+import umb.pytinytex
+
 DEFAULT_PACKAGES = ["fancyhdr", "multirow", "preprint"]
-
-
-def check_extra_installed() -> None:
-    spec = importlib.util.find_spec("pytinytex")
-    is_installed = spec is not None
-    if not is_installed:
-        raise ImportError("The 'tex' extra is required. ('pip install umb[tex]')")
 
 
 def is_tinytex_installed() -> bool:
@@ -56,11 +49,10 @@ def check_pdflatex_bibtex_installed() -> None:
 
 
 def install_tinytex(root: pathlib.Path) -> None:
-    pytinytex = importlib.import_module("pytinytex")
     tex_dir = root.joinpath("tinytex")
     tex_dir.mkdir(parents=True, exist_ok=True)
     tex_dir = tex_dir.as_posix()
-    pytinytex.download_tinytex(target_folder=tex_dir, download_folder=tex_dir)
+    umb.pytinytex.download_tinytex(target_folder=tex_dir, download_folder=tex_dir)
     check_pdflatex_bibtex_installed()
     install_packages(DEFAULT_PACKAGES)
 
