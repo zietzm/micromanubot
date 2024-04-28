@@ -153,6 +153,7 @@ def handle_build(args: argparse.Namespace, cwd: pathlib.Path) -> None:
     if args.type in {"all", "pdf"}:
         umb.install.check_pdflatex_bibtex_installed()
         umb.build.build_latex_pdf(cwd)
+    print("   [bold green]Finished[/] building the manuscript")
 
 
 def handle_install(args: argparse.Namespace) -> None:
@@ -167,6 +168,7 @@ def handle_install(args: argparse.Namespace) -> None:
 
     print(" [bold green]Installing[/] LaTeX compiler and packages")
     umb.install.install_tinytex(args.root)
+    print("   [bold green]Finished[/] installing TinyTeX and packages")
 
 
 def handle_uninstall(args: argparse.Namespace) -> None:
