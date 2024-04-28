@@ -46,18 +46,6 @@ class FiguresCache(BaseModel):
 
 
 class ManuscriptFigures:
-    """
-    Need to figure out how we want to cache figures. Maybe just do it then
-    add the `clean` subcommand to remove them if needed?
-
-    TODO:
-        1. Load the figure cache (.umb/figures.json)
-            - This should have URL: (cache_path, alias) for each figure
-        2. Parse the environment node to extract the figure url/path
-        3. Grab the figures we need and save them to .umb/figures
-        4. Copy all relevant figures to build/images
-    """
-
     def __init__(
         self,
         cache_path: pathlib.Path,
@@ -160,6 +148,7 @@ class ManuscriptFigures:
             self.cache = self.cache + FiguresCache(figures=to_download)
             self.cache.write_json(self.cache_json_path)
             for fig in to_download:
+                assert fig.local_path is not None, "Local path should be set"
                 shutil.copy(fig.local_path, build_dir / fig.new_alias)
 
         return None

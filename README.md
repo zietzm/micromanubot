@@ -11,27 +11,33 @@ All the flexibility of LaTeX, available immediately.
 ## Why Micromanubot?
 
 * LaTeX based - flexible, extensible, fully-customizable
-* Automatic citation management - cite using DOI or PMID
+* Automatic citation management - cite using DOI directly
 * Automatic image file management - provide images at URLs without manual downloads
 * No LaTeX boilerplate fiddling - automatic authorship, metadata, and formatting.
 
-
-## Installation
-
-`pdflatex` and `bibtex` must be installed to produce PDF output.
-A simple way to accomplish this is to install TeX Live.
-It appears that given the default packages imported, you'll need `fancyhdr`, `multirow`, and `preprint` as well, which can be installed using `tlmgr`.
-
-```bash
-pip install micromanubot
-```
-
 ## Usage
+
+### Create a new manuscript
 
 ```bash
 umb new my-manuscript
+```
+
+### Build the manuscript in the current directory
+
+```bash
 umb build
 ```
+
+### Install TinyTex
+
+```bash
+umb install
+```
+
+Installs TinyTex into the `~/.umb/tinytex` directory.
+
+### Help
 
 For a full list of commands and arguments, add `--help` to any command.
 
@@ -39,6 +45,27 @@ For a full list of commands and arguments, add `--help` to any command.
 umb --help
 umb new --help
 ```
+
+## Installation
+
+Full installation, including TinyTex:
+
+```bash
+pip install micromanubot[tex]
+umb install
+```
+
+If you already have TeX installed and prefer to use the existing installation:
+
+```bash
+pip install micromanubot
+```
+
+`pdflatex` and `bibtex` must be installed to produce PDF output.
+One way to accomplish this is to install LaTeX (e.g. install TeX Live, TinyTex, etc.).
+For the default packages imported, you'll also need `fancyhdr`, `multirow`, and `preprint` as well, which can be installed using `tlmgr`.
+Of course, you may add/remove packages as you like---it's just LaTeX!
+
 
 ## FAQ
 
@@ -84,3 +111,13 @@ Building a Micromanubot manuscript is like compiling a Rust project using `cargo
 It's ultimately doing a similar thing, but using the opinionated tool and structure makes the user interface so much nicer.
 Ultimately, though, it's just a first step build tool.
 You can always output a full LaTeX manuscript and compile it however you please.
+
+
+## Possible future features
+
+1. Citing using PubMedId (PMID)
+2. Citing using [Manubot](https://github.com/manubot/manubot) itself
+3. Improved templating (e.g. [Jinja2](https://palletsprojects.com/p/jinja/), [latexbuild](https://github.com/pappasam/latexbuild))
+4. In-place modification of LaTeX, not just whole-document string replacements.
+5. `clean` command to clear cache, etc.
+6. Allow `install` command to install other packages.
