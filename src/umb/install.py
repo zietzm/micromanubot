@@ -7,6 +7,9 @@ import importlib
 import importlib.util
 import pathlib
 import shutil
+import subprocess
+
+DEFAULT_PACKAGES = ["fancyhdr", "multirow", "preprint"]
 
 
 def check_extra_installed() -> None:
@@ -42,6 +45,10 @@ def find_bibtex() -> pathlib.Path:
     return _find_binary("bibtex")
 
 
+def find_tlmgr() -> pathlib.Path:
+    return _find_binary("tlmgr")
+
+
 def check_pdflatex_bibtex_installed() -> None:
     """Check if pdflatex and bibtex are installed."""
     find_pdflatex()
@@ -54,7 +61,20 @@ def install_tinytex(root: pathlib.Path) -> None:
     tex_dir.mkdir(parents=True, exist_ok=True)
     tex_dir = tex_dir.as_posix()
     pytinytex.download_tinytex(target_folder=tex_dir, download_folder=tex_dir)
+    check_pdflatex_bibtex_installed()
+    install_packages(DEFAULT_PACKAGES)
 
 
 def uninstall_tinytex(root: pathlib.Path) -> None:
     shutil.rmtree(root.joinpath("tinytex"))
+
+
+def install_packages(packages: list[str]) -> None:
+    tlmgr = find_tlmgr()
+    command = [tlmgr.as_posix(), "install"] + packages
+    result = subprocess.run(command, capture_output=True)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Failed to install packages: {result.stdout.decode()} "
+            f"{result.stderr.decode()}"
+        )
