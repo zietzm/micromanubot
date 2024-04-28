@@ -30,6 +30,9 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 
+[project.urls]
+Repository = "https://github.com/zietzm/micromanubot"
+
 [project.scripts]
 "umb" = "micromanubot.cli:main"
 
