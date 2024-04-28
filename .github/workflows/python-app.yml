@@ -25,6 +25,8 @@ jobs:
         use-uv: true
     - name: sync
       run: rye sync
+    - name: install tinytex
+      run: rye run umb install
     - name: lint
       run: rye lint
     - name: test
