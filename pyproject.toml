@@ -21,6 +21,11 @@ requires-python = ">= 3.8"
 [project.scripts]
 "umb" = "umb.cli:main"
 
+[project.optional-dependencies]
+tex = [
+    "pytinytex @ git+https://github.com/zietzm/PyTinyTeX@refactor",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
