@@ -157,7 +157,6 @@ def handle_build(args: argparse.Namespace, cwd: pathlib.Path) -> None:
 
 
 def handle_install(args: argparse.Namespace) -> None:
-    micromanubot.install.check_extra_installed()
     is_installed = micromanubot.install.is_tinytex_installed()
     if is_installed and not args.force:
         print("TinyTeX already installed (use --force to reinstall)")
