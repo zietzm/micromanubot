@@ -17,6 +17,7 @@ from pylatexenc.latexwalker import LatexEnvironmentNode, LatexMacroNode
 import umb.cite
 import umb.config
 import umb.figures
+import umb.install
 
 
 def is_umb_project(root_dir: pathlib.Path) -> bool:
@@ -94,11 +95,13 @@ def build_latex(root_dir: pathlib.Path) -> None:
 def build_latex_pdf(root_dir: pathlib.Path) -> None:
     """Compile the built LaTeX manuscript to a PDF."""
     build_dir = root_dir.joinpath("build")
+    pdflatex = umb.install.find_pdflatex().as_posix()
+    bibtex = umb.install.find_bibtex().as_posix()
     commands = [
-        "pdflatex -interaction=nonstopmode main",
-        "bibtex main",
-        "pdflatex -interaction=nonstopmode main",
-        "pdflatex -interaction=nonstopmode main",
+        f"{pdflatex} -interaction=nonstopmode main",
+        f"{bibtex} main",
+        f"{pdflatex} -interaction=nonstopmode main",
+        f"{pdflatex} -interaction=nonstopmode main",
     ]
     # Set the SOURCE_DATE_EPOCH environment variable to 0 to ensure reproducible
     # builds. For more info, see https://tex.stackexchange.com/q/229605 and

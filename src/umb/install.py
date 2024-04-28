@@ -17,10 +17,35 @@ def check_extra_installed() -> None:
 
 def is_tinytex_installed(root: pathlib.Path) -> bool:
     bin_dir = root.joinpath("tinytex", "bin")
+    if not bin_dir.exists():
+        return False
+
     for bin in ["pdflatex", "bibtex"]:
-        if not bin_dir.joinpath(bin).exists():
+        matches = list(bin_dir.glob(f"*/{bin}"))
+        if len(matches) == 0:
             return False
     return True
+
+
+def _find_latex(name: str) -> pathlib.Path:
+    on_path = shutil.which(name)
+    if on_path:
+        return pathlib.Path(on_path)
+
+    umb_dir = pathlib.Path.home().joinpath(".umb", "tinytex", "bin")
+    tinytex_executable = umb_dir.joinpath(name)
+    if tinytex_executable.exists():
+        return tinytex_executable
+
+    raise FileNotFoundError(f"{name} not found")
+
+
+def find_pdflatex() -> pathlib.Path:
+    return _find_latex("pdflatex")
+
+
+def find_bibtex() -> pathlib.Path:
+    return _find_latex("bibtex")
 
 
 def check_pdflatex_bibtex_installed() -> None:
@@ -39,5 +64,10 @@ def check_pdflatex_bibtex_installed() -> None:
 def install_tinytex(root: pathlib.Path) -> None:
     pytinytex = importlib.import_module("pytinytex")
     tex_dir = root.joinpath("tinytex")
-    pytinytex.install_tinytex(tex_dir)
-    print(f"TinyTeX installed at {root}")
+    tex_dir.mkdir(parents=True, exist_ok=True)
+    tex_dir = tex_dir.as_posix()
+    pytinytex.download_tinytex(target_folder=tex_dir, download_folder=tex_dir)
+
+
+def uninstall_tinytex(root: pathlib.Path) -> None:
+    shutil.rmtree(root.joinpath("tinytex"))
