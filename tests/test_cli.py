@@ -8,10 +8,10 @@ from tempfile import TemporaryDirectory
 import umb.config
 
 
-def test_init(tmp_path: pathlib.Path) -> None:
+def test_new(tmp_path: pathlib.Path) -> None:
     """Test that all the necessary directories and files are created."""
     with TemporaryDirectory() as tmp_dir:
-        tmp_path = pathlib.Path(tmp_dir)
+        tmp_path = pathlib.Path(tmp_dir).joinpath("my-manuscript")
         new_args = shlex.split(f"umb new {tmp_path}")
         subprocess.run(new_args, check=True)
         directories = [
@@ -47,7 +47,7 @@ def test_init(tmp_path: pathlib.Path) -> None:
 def test_build(tmp_path: pathlib.Path) -> None:
     """Test that the build command works."""
     with TemporaryDirectory() as tmp_dir:
-        tmp_path = pathlib.Path(tmp_dir)
+        tmp_path = pathlib.Path(tmp_dir).joinpath("my-manuscript")
         new_args = shlex.split(f"umb new {tmp_path}")
         subprocess.run(new_args, check=True)
 
