@@ -20,26 +20,26 @@ def is_tinytex_installed() -> bool:
     return pathlib.Path.home().joinpath(".umb", "tinytex").exists()
 
 
-def _find_latex(name: str) -> pathlib.Path:
-    on_path = shutil.which(name)
-    if on_path:
-        return pathlib.Path(on_path)
-
+def _find_binary(name: str) -> pathlib.Path:
     root = pathlib.Path.home().joinpath(".umb")
     umb_dir = root.joinpath("tinytex", "bin")
     matches = list(umb_dir.glob(f"*/{name}"))
     if len(matches) > 0:
         return matches[0]
 
+    on_path = shutil.which(name)
+    if on_path:
+        return pathlib.Path(on_path)
+
     raise FileNotFoundError(f"{name} not found")
 
 
 def find_pdflatex() -> pathlib.Path:
-    return _find_latex("pdflatex")
+    return _find_binary("pdflatex")
 
 
 def find_bibtex() -> pathlib.Path:
-    return _find_latex("bibtex")
+    return _find_binary("bibtex")
 
 
 def check_pdflatex_bibtex_installed() -> None:
