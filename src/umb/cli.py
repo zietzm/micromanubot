@@ -8,6 +8,7 @@ from rich.logging import RichHandler
 
 import umb
 import umb.build
+import umb.install
 import umb.new
 
 
@@ -23,6 +24,7 @@ def main():
     subparsers = parser.add_subparsers(help="sub-command help", dest="command")
     add_new_command(subparsers)
     add_build_command(subparsers)
+    add_install_command(subparsers)
     args = parser.parse_args()
 
     if args.verbose:
@@ -51,7 +53,18 @@ def main():
             print("   [bold green]Building[/] manuscript")
             umb.build.setup_build_directory(cwd)
             umb.build.build_latex(cwd)
-            umb.build.build_latex_pdf(cwd)
+            if args.type in {"all", "pdf"}:
+                umb.install.check_pdflatex_bibtex_installed()
+                umb.build.build_latex_pdf(cwd)
+        case "install":
+            umb.install.check_extra_installed()
+            if umb.install.is_tinytex_installed(args.root):
+                # TODO: Could add a --force flag to reinstall
+                print("TinyTeX already installed")
+                return
+
+            print(" [bold green]Installing[/] LaTeX compiler and packages")
+            umb.install.install_tinytex(args.root)
         case None:
             parser.print_help()
         case _:
@@ -94,3 +107,19 @@ def add_build_command(subparsers: argparse._SubParsersAction) -> None:
         default="all",
     )
     add_verbosity_arg(build_parser)
+
+
+def add_install_command(subparsers: argparse._SubParsersAction) -> None:
+    install_parser = subparsers.add_parser(
+        "install",
+        help="Install LaTeX compiler and packages",
+        description="Install LaTeX compiler and packages",
+        add_help=True,
+    )
+    install_parser.add_argument(
+        "--root",
+        help="Root directory to install TinyTex. Default is ~/.umb",
+        type=pathlib.Path,
+        default=pathlib.Path.home().joinpath(".umb"),
+    )
+    add_verbosity_arg(install_parser)
