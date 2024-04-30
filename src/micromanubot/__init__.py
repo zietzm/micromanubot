@@ -1,3 +1,1 @@
-import importlib.metadata
-
-__version__ = importlib.metadata.version("micromanubot")
+from ._version import __version__  # noqa: F401
