@@ -1,6 +1,6 @@
 [project]
 name = "micromanubot"
-version = "0.4.2"
+version = "0.4.3"
 description = "A build tool for academic manuscripts"
 authors = [
     { name = "zietzm", email = "michael.zietz@gmail.com" }
