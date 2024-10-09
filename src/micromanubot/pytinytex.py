@@ -35,22 +35,21 @@ def download_tinytex(
         )
     url = tinytex_urls[pf]
     filename = url.split("/")[-1]
-    if download_folder is not None:
-        if download_folder.endswith("/"):
-            download_folder = download_folder[:-1]
+    if download_folder is not None and download_folder.endswith("/"):
+        download_folder = download_folder[:-1]
     if download_folder is None:
         download_folder = "."
     filename = os.path.join(os.path.expanduser(download_folder), filename)
     if os.path.isfile(filename):
-        logger.info("Using already downloaded file %s" % (filename))
+        logger.info(f"Using already downloaded file {filename}")
     else:
-        logger.info("Downloading TinyTeX from %s ..." % url)
+        logger.info(f"Downloading TinyTeX from {url} ...")
         response = urllib.request.urlopen(url)
         with open(filename, "wb") as out_file:
             shutil.copyfileobj(response, out_file)
-        logger.info("Downloaded TinyTeX, saved in %s ..." % filename)
+        logger.info(f"Downloaded TinyTeX, saved in {filename} ...")
 
-    logger.info("Extracting %s to %s..." % (filename, target_folder))
+    logger.info(f"Extracting {filename} to {target_folder}...")
     extracted_dir_name = "TinyTeX"
     if filename.endswith(".zip"):
         zf = zipfile.ZipFile(filename)
@@ -66,7 +65,7 @@ def download_tinytex(
         tf.close()
         extracted_dir_name = ".TinyTeX"
     else:
-        raise RuntimeError("File {0} not supported".format(filename))
+        raise RuntimeError(f"File {filename} not supported")
     tinytex_extracted = os.path.join(target_folder, extracted_dir_name)
     for file_name in os.listdir(tinytex_extracted):
         shutil.move(os.path.join(tinytex_extracted, file_name), target_folder)
@@ -84,8 +83,8 @@ def _get_tinytex_urls(version, variation):
         response = urllib.request.urlopen(url)
         version_url_frags = response.url.split("/")
         version = version_url_frags[-1]
-    except urllib.error.HTTPError:
-        raise RuntimeError("Invalid TinyTeX version {}.".format(version))
+    except urllib.error.HTTPError as err:
+        raise RuntimeError(f"Invalid TinyTeX version {version}.") from err
     # read the HTML content
     response = urllib.request.urlopen(
         "https://github.com/rstudio/tinytex-releases/releases/expanded_assets/"

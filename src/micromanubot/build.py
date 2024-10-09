@@ -7,7 +7,7 @@ import re
 import shlex
 import shutil
 import subprocess
-from typing import Type, TypeVar
+from typing import TypeVar
 
 import bibtexparser
 import pylatexenc.latexwalker
@@ -152,8 +152,8 @@ class ManuscriptFile:
         self.fmt_content: str | None = None
 
     @classmethod
-    def read_tex(cls: Type[T], path: pathlib.Path) -> T:
-        with open(path, "r") as f:
+    def read_tex(cls: type[T], path: pathlib.Path) -> T:
+        with open(path) as f:
             raw_content = f.read()
 
         return cls(raw_content)
